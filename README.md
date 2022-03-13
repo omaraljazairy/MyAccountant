@@ -1,4 +1,11 @@
-## MyAccountant
+# MyAccountant
+--------------
+is an API created to help me manage my invoices. I can create, modify and get an overview of my incomes with and without tax. It also reminds my of uploading receipts to my accountant app.
+This api is built using Python FastAPI.
+
+
+## Class Diagram
+----------------
 
 ```mermaid
 classDiagram
@@ -10,10 +17,8 @@ classDiagram
     class Contract
     Contract: +id int
     Contract: +customer_id int
-    Contract: +rate float
     Contract: +unit str
-    Contract: +vat float
-    Contract: +yearly_vat float
+    Contract: +rate float
     Contract: +start_date date
     Contract: +created datetime
 
@@ -24,18 +29,15 @@ classDiagram
     Income: +contract_id int
     Income: +total float
     Income: +invoice_date str
-    Income: +excl float
-    Income: +incl float
-    Income: +yearly_vat float
-    Income: +netto
     Income: +created datetime
 
-    Income: +init(**kwargs) None
+    Income: +invoice_month_year() str
+    Income: +rate_unit() str
     Income: +customer_name() str
-    Income: +month_year(invoice_date) str
-    Income: +total_rate_excl_vat(rate) float
-    Income: +total_rate_incl_vat(rate,vat) float
-    Income: +total_yearly_vat(yearly_vat) float
+    Income: +customer_id() int
+    Income: +total_rate_excl_vat() float
+    Income: +total_rate_incl_vat() float
+    Income: +total_yearly_vat() float
     Income: +total_netto() float
 
 
