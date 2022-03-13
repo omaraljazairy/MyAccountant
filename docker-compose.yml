@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    # command: uvicorn app.main:app --reload --workers 1 --host 0.0.0.0 --port 8000
+    command: tail -f /dev/null
+    volumes:
+      #- ./:/usr/src/app
+      - type: bind
+        source: .
+        target: /usr/src/app
+      - .env:/usr/src/app/.env
+    ports:
+      - 8004:8000
+    environment:
+      - ENVIRONMENT=dev
+      - TESTING=0
+      - DATABASE_URL=sqlite:///./sql_app.db
