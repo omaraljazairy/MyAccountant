@@ -71,7 +71,7 @@ class Income(Base):
 
 
     @property
-    def customer_name(self)->str:
+    def customer_name(self) -> str:
         """return the customer name. """
 
         return self.contract.customer.name

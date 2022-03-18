@@ -1,7 +1,7 @@
 import pytest
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
-from sqlalchemy_utils import database_exists, drop_database, create_database
+from sqlalchemy_utils import database_exists, create_database
 from services.database import Base
 from services.database import get_db
 import logging
@@ -13,14 +13,18 @@ from app.enums import Unit
 
 logger = logging.getLogger('fixtures')
 
-## DB
+# DB
 TEST_SQLALCHEMY_DATABASE_URL = "sqlite:///./sql_test_app.db"
+
 
 @pytest.fixture(scope="session")
 def db_engine():
     """create the database and return an instance of the engine."""
 
-    engine = create_engine(TEST_SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False})
+    engine = create_engine(TEST_SQLALCHEMY_DATABASE_URL, connect_args={
+        "check_same_thread": False
+        }
+    )
     if not database_exists:
         create_database(engine.url)
 
@@ -30,8 +34,9 @@ def db_engine():
 
 @pytest.fixture(scope="session")
 def db(db_engine):
-    """setup the database connection and use the db_engine to use the test database.
-    return a session to be available for all tests """
+    """setup the database connection and use the db_engine to use the test
+    database. return a session to be available for all tests.
+    """
 
     connection = db_engine.connect()
 
@@ -47,20 +52,23 @@ def db(db_engine):
     db.rollback()
     connection.close()
 
+
 # override the get_db to use the test db during the test session
 app.dependency_overrides[get_db] = lambda: db
 
 
 @pytest.fixture(scope="session")
 def client(db):
-    """create the test client using the test database to be available for all tests. """
+    """create the test client using the test database to be available for
+    all tests.
+    """
     app.dependency_overrides[get_db] = lambda: db
 
     with TestClient(app) as c:
         yield c
 
 
-### DB fixtures ###
+# DB fixtures ###
 @pytest.fixture(scope="session")
 def create_customers(db):
 
@@ -100,7 +108,6 @@ def create_contract(db):
         start_date='2010-08-01'
     ))
 
-
     logger.debug(f'fixture result from contract 3 => {result.id}')
 
 
@@ -112,41 +119,45 @@ def create_income(db):
     logger.debug('fixture started')
     crud.create_income(session, schema.IncomeBase(
         total=1,
-        invoice_date = '2010-01-01',
-        contract_id = 1
+        invoice_date='2010-01-01',
+        contract_id=1
         )
     )
     crud.create_income(session, schema.IncomeBase(
         total=2,
-        invoice_date = '2010-02-01',
-        contract_id = 2
+        invoice_date='2010-02-01',
+        contract_id=2
         )
     )
     result = crud.create_income(session, schema.IncomeBase(
         total=3,
-        invoice_date = '2022-03-01',
-        contract_id = 3,
+        invoice_date='2022-03-01',
+        contract_id=3,
         )
     )
     logger.debug(f'fixture result from income_3 => {result.id}')
 
+# AUTH USER ##
 
-## AUTH USER ##
 
 @pytest.fixture(scope="session")
 def auth_user(client) -> str:
-    """create a user and log him in and return a token. any endpoint that requires the 
-    user to be authenticated, can use this token. """
+    """create a user and log him in and return a token. any endpoint that
+    requires the user to be authenticated, can use this token."""
 
     user_data = {
-        "username":"omar1",
-        "password":"pass123",
-        "email":"foo@bar.com"
+        "username": "omar1",
+        "password": "pass123",
+        "email": "foo@bar.com"
     }
     response = client.post("/user/", json=user_data)
     logger.debug(f"response user: {response}")
 
-    response_token = client.post("/auth/login", json={"username":"omar1", "password":"pass123"})
+    response_token = client.post("/auth/login", json={
+        "username": "omar1",
+        "password": "pass123"
+        }
+    )
     logger.debug(f"response token : {response_token.content}")
 
     token = response_token.json()['access_token']

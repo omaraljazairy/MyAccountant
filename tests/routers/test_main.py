@@ -3,6 +3,7 @@ import logging
 
 logger = logging.getLogger('test')
 
+
 def test_read_main(client, auth_user):
     token = auth_user
     headers = {"Authorization": f"Bearer {token}"}

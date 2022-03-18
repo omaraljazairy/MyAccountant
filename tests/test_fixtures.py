@@ -8,22 +8,22 @@ def test_fixture_customer(db, create_customers):
 
     create_customers
     customer = db.query(models.Customer).all()
-    logger.debug(f'customer : {customer} - {len(customer)}')    
+    logger.debug(f'customer : {customer} - {len(customer)}')
 
     assert len(customer) == 3
 
 
 def test_fixture_contract(create_contract, db):
-    
+
     create_contract
     contract = db.query(models.Contract).all()
-    logger.debug(f'contract : {contract} - {len(contract)}')    
+    logger.debug(f'contract : {contract} - {len(contract)}')
 
     assert len(contract) == 3
 
 
 def test_fixture_income(db, create_income):
-    
+
     create_income
     income = db.query(models.Income).all()
     income_1 = income[0]

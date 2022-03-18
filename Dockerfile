@@ -3,7 +3,7 @@ FROM python:3.6
 
 RUN apt-get update
 RUN apt-get install -y wget vim git zip unzip less sqlite3 bsdmainutils bc
-RUN echo "alias mypytest='python -m pytest --cov=. tests/ --cov-report term'" >> ~/.bashrc
+RUN echo "alias mypytest='python -m pytest --cov=. tests/ --cov-report term --flake8'" >> ~/.bashrc
 
 # set working directory
 RUN mkdir -p /usr/src/app
