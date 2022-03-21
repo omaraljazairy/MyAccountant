@@ -1,10 +1,12 @@
+from typing import List
 from fastapi import APIRouter, Depends, status, HTTPException
 from datamodels.schema import Customer, CustomerBase
-from datamodels import crud, models
+from datamodels import crud, models, schema
 from sqlalchemy.orm import Session
+from app.config import get_settings, Settings
 # from sqlalchemy.sql.functions import current_user
 from services.database import get_db
-# from routers import auth
+from routers import auth
 import logging
 
 
@@ -22,3 +24,24 @@ async def add_customer(customer: CustomerBase, db: Session = Depends(get_db)):
             detail=f"Customer {customer.name} already exists"
         )
     return crud.create_customer(db=db, customer=customer)
+
+
+@router.get("/all", response_model=List[Customer])
+async def get_all_customers(
+    settings: Settings = Depends(get_settings),
+    db: Session = Depends(get_db),
+    current_user: schema.Login = Depends(auth.get_current_user)
+    ):
+    
+    return crud.get_all_customers(db=db)
+
+
+@router.get("/{id}", response_model=schema.CustomerDetailResponse)
+async def get_all_customers(
+    id: int,
+    settings: Settings = Depends(get_settings),
+    db: Session = Depends(get_db),
+    current_user: schema.Login = Depends(auth.get_current_user)
+    ):
+    
+    return crud.get_customer_by_id(db=db, id=id)

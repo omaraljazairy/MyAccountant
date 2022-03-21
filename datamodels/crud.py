@@ -5,6 +5,18 @@ import logging
 
 logger = logging.getLogger('crud')
 
+# CUSTOMER
+
+def get_all_customers(db: Session):
+    """return all data from the customer model."""
+
+    return db.query(models.Customer).all()
+
+def get_customer_by_id(db: Session, id: int):
+    """return customer data by customer id."""
+
+    return db.query(models.Customer).get(id)
+
 
 def create_customer(db: Session, customer: schema.Customer):
     db_customer = models.Customer(
@@ -16,6 +28,8 @@ def create_customer(db: Session, customer: schema.Customer):
     return db_customer
 
 
+# CONTRACT
+
 def create_contract(db: Session, contract: schema.Contract):
     db_contract = models.Contract(
         **contract.dict()
@@ -26,6 +40,8 @@ def create_contract(db: Session, contract: schema.Contract):
     return db_contract
 
 
+# INCOME
+
 def create_income(db: Session, income: schema.Income):
     db_income = models.Income(
         **income.dict()
@@ -34,7 +50,6 @@ def create_income(db: Session, income: schema.Income):
     db.commit()
     db.refresh(db_income)
     return db_income
-
 
 def get_all_income(db: Session):
     """return all data from the income model."""

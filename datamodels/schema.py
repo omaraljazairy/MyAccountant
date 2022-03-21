@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, List
 from pydantic import BaseModel
 from datetime import date, datetime
 from app.enums import Unit
@@ -69,9 +69,18 @@ class CustomerBase(BaseModel):
     name: str
     
 
-
 class Customer(CustomerBase):
     id: int
+
+    class Config:
+        orm_mode = True
+
+class CustomerDetailResponse(BaseModel):
+    """ base model for customer details. """
+
+    id: int
+    name: str
+    contract: List[Contract]
 
     class Config:
         orm_mode = True
@@ -114,55 +123,6 @@ class IncomeCustomResponse(BaseModel):
 
     class Config:
         orm_mode = True
-
-
-# class IncomeByDate(BaseModel):
-#     """required for the request by invoice_date. """
-
-#     start_date: str
-#     end_date: str = None
-
-
-
-# def taxed_income(income: Income, settings: Settings):
-#     total_hours = get_total_hours(
-#         hours_per_day=income.hours_per_day, 
-#         days=income.days
-#     )
-#     bruto_income = get_total_bruto_income(total_hours=total_hours, customer_id=income.customer_id)
-#     monthly_tax = bruto_income - round(bruto_income / settings.MONTHY_TAX)
-#     monthly_taxed = bruto_income - monthly_tax
-#     yearly_tax = round(monthly_taxed * settings.YEARLY_TAX)
-#     netto_income = monthly_taxed - yearly_tax
-
-#     total_hourly_income = Income(
-#         hours_per_day=income.hours_per_day,
-#         days=income.days,
-#         date=income.date,
-#         customer_id=income.customer_id,
-#         bruto_income=bruto_income,
-#         total_hours=total_hours,
-#         monthly_tax=monthly_tax,
-#         monthly_taxed=monthly_taxed,
-#         yearly_tax=yearly_tax,
-#         netto_income=netto_income
-#     )
-#     return total_hourly_income
-
-
-# def get_total_hours(hours_per_day:int, days:int) -> int:
-#     """ return the total hours. """
-    
-#     total_hours = hours_per_day * days
-#     return total_hours
-
-# def get_total_bruto_income(total_hours:int, customer_id:int) -> float:
-#     """ returns the total bruto income based on the total hours and customer. """
-
-#     bruto_income = total_hours * (KPN_HOURLY_RATE if customer_id == 1 else TELINDUS_HOURLY_RATE)
-#     return bruto_income
-
-
 
 
 class ResponseIncome(BaseModel):

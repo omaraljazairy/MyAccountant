@@ -77,7 +77,8 @@ def create_customers(db):
     logger.debug('fixture started')
     crud.create_customer(session, schema.CustomerBase(name='Bar'))
     crud.create_customer(session, schema.CustomerBase(name='Bar2'))
-    result = crud.create_customer(session, schema.CustomerBase(name='Bar3'))
+    crud.create_customer(session, schema.CustomerBase(name='Bar3'))
+    result = crud.create_customer(session, schema.CustomerBase(name='FooBar3'))
     logger.debug(f'fixture result from customer3 => {result.id}')
 
 

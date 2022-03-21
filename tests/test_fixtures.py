@@ -10,7 +10,7 @@ def test_fixture_customer(db, create_customers):
     customer = db.query(models.Customer).all()
     logger.debug(f'customer : {customer} - {len(customer)}')
 
-    assert len(customer) == 3
+    assert len(customer) == 4
 
 
 def test_fixture_contract(create_contract, db):

@@ -109,7 +109,7 @@ class Income(Base):
         """ returns the total amount of the yearly tax that needs to be paid 
         the next year."""
 
-        total = self.total_rate_excl_vat * (TAX.INCOME_BOX2.value / 100)
+        total = self.total_rate_excl_vat * (TAX.INCOME_DEFAULT_BOX.value / 100)
         
         return round(total,2)
 
