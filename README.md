@@ -7,7 +7,8 @@ This api is built using Python FastAPI.
 All change logs can be found [here](CHANGELOG.md)
 
 ## Authors
-Omar Aljazairy omar@fedal.nl
+Omar Aljazairy: omar@fedal.nl
+
 
 ## Class Diagram
 ----------------
@@ -50,3 +51,13 @@ classDiagram
     Contract "1" --> "many" Income
     
 ```
+
+## Usage
+--------
+
+- To start the app, first run the container:
+  make start 
+- To enter the container
+  make bash
+- To unittest the application
+  make test
