@@ -100,15 +100,19 @@ def test_income_post_day_rate(auth_user, client):
     assert data == expected_data
 
 
-def test_get_income_by_start_date(auth_user, client):
-    """make a get request with a start_date only. with the start_date 2010-02-01.
+def test_get_income_by_start_date_end_date(auth_user, client):
+    """make a get request with a start_date only. with the start_date
+    2010-02-01 and a future end date that has no invoice after
     Expect 2 records starting from 2010-02-01.
     """
 
     token = auth_user
     headers = {"Authorization": f"Bearer {token}"}
 
-    response = client.get('/income/by_date/2010-03-01/', headers=headers)
+    response = client.get(
+        '/income/by_date/2010-03-01/2022-04-01/',
+        headers=headers
+        )
     data = response.json()
 
     expected_data = [
@@ -145,16 +149,16 @@ def test_get_income_by_start_date(auth_user, client):
     assert data[1] == expected_data[1]
 
 
-def test_get_income_by_start_date_end_date(auth_user, client):
-    """make a get request with a start_date only. with the start_date 2010-02-01.
-    Expect 2 records starting from 2010-02-01.
+def test_get_income_by_start_end_date_1_record(auth_user, client):
+    """make a get request with a start_date 2010-02-01 and end
+    date 2011-04-01. Expect 1 record starting from 2010-02-01.
     """
 
     token = auth_user
     headers = {"Authorization": f"Bearer {token}"}
 
     response = client.get(
-        '/income/by_date/2010-03-01/?end_date=2011-04-01',
+        '/income/by_date/2010-03-01/2011-04-01/',
         headers=headers
     )
     data = response.json()

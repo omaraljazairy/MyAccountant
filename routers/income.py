@@ -37,10 +37,10 @@ async def get_all_income(
     return crud.get_all_income(db=db)
 
 
-@router.get("/by_date/{start_date}/", response_model=List[schema.IncomeCustomResponse])
+@router.get("/by_date/{start_date}/{end_date}/", response_model=List[schema.IncomeCustomResponse])
 async def get_by_invoice_date(
-    start_date:date,
-    end_date: date = None,
+    start_date: date,
+    end_date: date,
     db: Session = Depends(get_db),
     current_user: schema.Login = Depends(auth.get_current_user)
     ):
