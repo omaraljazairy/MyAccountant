@@ -7,3 +7,7 @@
 ## Added
 ### v0.0.3 	 Mon Mar 21 21:59:20 2022 +0100 
 - Omar Aljazairy: customer get added
+
+## Modified
+### v0.0.4 	 Fri Apr 01 22:50:20 2022 +0100 
+- Omar Aljazairy: end_date added to the url path
