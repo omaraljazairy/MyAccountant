@@ -1,6 +1,6 @@
 import logging
-from app.enums import Unit
 
+from app.enums import Unit
 
 logger = logging.getLogger('test')
 

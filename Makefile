@@ -9,4 +9,4 @@ bash:	## enter the docker container bash
 stop:	## stop the docker containers
 	@docker-compose down
 test:	## unittest the application using pytest
-	@python -m pytest --cov=. tests/ --cov-report term --flake8
+	@python -m pytest --cov=. tests/ --cov-report term --flake8 --isort

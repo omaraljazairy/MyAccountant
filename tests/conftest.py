@@ -1,15 +1,15 @@
+import logging
+
 import pytest
+from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
-from sqlalchemy_utils import database_exists, create_database
-from services.database import Base
-from services.database import get_db
-import logging
-from fastapi.testclient import TestClient
-from app.main import app
-from datamodels import schema
-from datamodels import crud
+from sqlalchemy_utils import create_database, database_exists
+
 from app.enums import Unit
+from app.main import app
+from datamodels import crud, schema
+from services.database import Base, get_db
 
 logger = logging.getLogger('fixtures')
 

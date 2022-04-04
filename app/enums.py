@@ -1,6 +1,6 @@
 from enum import Enum
 
-class Unit(Enum):
+class Unit(str, Enum):
 
     HOUR = 'hour'
     DAY = 'day'

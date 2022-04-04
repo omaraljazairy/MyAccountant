@@ -44,6 +44,16 @@ async def get_by_invoice_date(
     db: Session = Depends(get_db),
     current_user: schema.Login = Depends(auth.get_current_user)
     ):
+    """
+    Get all income data between two dates, start_date and end_date
+
+    Args:
+        start_date (date): This represents the invoice date. valid value yyyy-mm-dd
+        end_date (date): This represents the invoice date. valid value yyyy-mm-dd
+
+    Returns:
+        json: list of all incomes between the start and end dates.
+    """
 
     result = {'start_date': start_date, 'end_date': end_date }
     logger.debug(f"income params: {result}")

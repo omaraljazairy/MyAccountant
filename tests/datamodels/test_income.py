@@ -1,9 +1,8 @@
-# from fastapi.testclient import TestClient
-import unittest
-# from app.main import app
-from datetime import date
-from datamodels.models import Income, Customer, Contract
 import logging
+import unittest
+from datetime import date
+
+from datamodels.models import Contract, Customer, Income
 
 
 class DataModelsTest(unittest.TestCase):

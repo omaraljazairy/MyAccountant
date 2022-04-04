@@ -1,12 +1,8 @@
-# from starlette.testclient import TestClient
-# from app.main import app
-# from decorators.test_db import temp_db
 import logging
+
 from app.enums import Unit
 
-
 logger = logging.getLogger('test')
-# client = TestClient(app)
 
 
 def test_post_contract(client):

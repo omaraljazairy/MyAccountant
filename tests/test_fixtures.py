@@ -1,5 +1,6 @@
-from datamodels import models
 import logging
+
+from datamodels import models
 
 logger = logging.getLogger('fixtures')
 

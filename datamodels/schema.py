@@ -1,8 +1,8 @@
 from typing import Optional, List
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from datetime import date, datetime
 from app.enums import Unit
-from sqlalchemy.sql.sqltypes import Float
+
 
 
 ## Auth login
@@ -38,19 +38,42 @@ class ContractBase(BaseModel):
     base class.
     """
 
-    customer_id: int
-    rate: float
-    unit: str
-    start_date: date
+    customer_id: int = Field(
+        title="the customer's id",
+        description="the Id of the existing customer",
+        )
+    rate: float = Field(
+        title="float number of the hourly or daily netto rate",
+        description="a float number of the hourly or daily netto rate",
+        gt=0
+    )
+    unit: Unit = Field(
+        title="hour or day",
+        description="has to be either `day` or `hour`"
+    )
+    start_date: date = Field(
+        title="the start date of the contract",
+        description="format should be yyyy-mm-dd"
+    )
 
     class Config:
         schema_extra={
-            "example": {
-                "customer_id": 1,
-                "rate": 10.00,
-                "unit": "hour",
-                "start_date": '2021-01-01'
-            }
+            "example": [
+                {
+                    "customer_id": 1,
+                    "rate": 10.00,
+                    "unit": Unit.HOUR,
+                    "start_date": '2021-01-01'
+
+                },
+                {
+                    "customer_id": 2,
+                    "rate": 100.00,
+                    "unit": Unit.DAY,
+                    "start_date": '2021-05-01'
+
+                }                
+            ]
         }
 
 
@@ -62,12 +85,27 @@ class Contract(ContractBase):
     class Config:
         orm_mode = True
 
-
 ## Customer
 class CustomerBase(BaseModel):
     """ base model used for the api."""
-    name: str
+    name: str = Field(
+        title="The companyname working for.",
+        description="A unique name of the company working for"
+    )
     
+    class Config:
+        schema_extra={
+            "example" : [
+                {
+                    "name": "foo.com"
+                },
+                {
+                    "name": "bar.com"
+                }
+            ]
+
+        }
+
 
 class Customer(CustomerBase):
     id: int
@@ -89,9 +127,37 @@ class CustomerDetailResponse(BaseModel):
 ## Income
 class IncomeBase(BaseModel):
     """ what should be validated in the api. """
-    total: float
-    contract_id: int
-    invoice_date: date
+    total: float = Field(
+        title="number of units",
+        description="this could be the total days if the unit in the \
+            contract is day or hours if unit is hour")
+    contract_id: int = Field(
+        title="The stored local contract_id",
+        description="The contract that belongs to the income"
+    )
+    invoice_date: date = Field(
+        title="The date of the generated invoice",
+        description="the date format should be yyyy-mm-dd"
+    )
+
+
+    class Config:
+        schema_extra={
+            "example" : [
+                {
+                    "total": 30.5,
+                    "contract_id": 1,
+                    "invoice_date": "2020-04-05"
+                },
+                {
+                    "total": 20,
+                    "contract_id": 2,
+                    "invoice_date": "2020-08-01"
+                }
+            ]
+
+        }
+
 
 
 class Income(IncomeBase):
