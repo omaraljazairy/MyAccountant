@@ -1,48 +1,12 @@
 from sqlalchemy.orm import Session
-from . import models, schema
+from datamodels import models, schema
 from datetime import date
 import logging
 
 logger = logging.getLogger('crud')
 
-# CUSTOMER
 
-def get_all_customers(db: Session):
-    """return all data from the customer model."""
-
-    return db.query(models.Customer).all()
-
-def get_customer_by_id(db: Session, id: int):
-    """return customer data by customer id."""
-
-    return db.query(models.Customer).get(id)
-
-
-def create_customer(db: Session, customer: schema.Customer):
-    db_customer = models.Customer(
-        **customer.dict()
-    )
-    db.add(db_customer)
-    db.commit()
-    db.refresh(db_customer)
-    return db_customer
-
-
-# CONTRACT
-
-def create_contract(db: Session, contract: schema.Contract):
-    db_contract = models.Contract(
-        **contract.dict()
-    )
-    db.add(db_contract)
-    db.commit()
-    db.refresh(db_contract)
-    return db_contract
-
-
-# INCOME
-
-def create_income(db: Session, income: schema.Income):
+def create(db: Session, income: schema.Income):
     db_income = models.Income(
         **income.dict()
     )
@@ -75,5 +39,3 @@ def get_income_by_customer(db: Session, customer_id:int):
 
     return db.query(models.Income).join(models.Contract).\
         filter(models.Contract.customer_id == customer_id).all()
-        # join(models.Contract).filter(models.Contract.customer_id == customer_id)
-        # filter(models.Income.customer_name == customer_id).all()

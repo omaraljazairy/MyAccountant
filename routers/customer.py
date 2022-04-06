@@ -1,7 +1,8 @@
 from typing import List
 from fastapi import APIRouter, Depends, status, HTTPException
 from datamodels.schema import Customer, CustomerBase
-from datamodels import crud, models, schema
+from datamodels import models, schema
+from datamodels.cruds import crud_customer
 from sqlalchemy.orm import Session
 from app.config import get_settings, Settings
 # from sqlalchemy.sql.functions import current_user
@@ -23,7 +24,7 @@ async def add_customer(customer: CustomerBase, db: Session = Depends(get_db)):
             status_code=status.HTTP_409_CONFLICT,
             detail=f"Customer {customer.name} already exists"
         )
-    return crud.create_customer(db=db, customer=customer)
+    return crud_customer.create(db=db, customer=customer)
 
 
 @router.get("/all", response_model=List[Customer])
@@ -33,7 +34,7 @@ async def get_all_customers(
     current_user: schema.Login = Depends(auth.get_current_user)
     ):
     
-    return crud.get_all_customers(db=db)
+    return crud_customer.get_all_customers(db=db)
 
 
 @router.get("/{id}", response_model=schema.CustomerDetailResponse)
@@ -44,4 +45,4 @@ async def get_all_customers(
     current_user: schema.Login = Depends(auth.get_current_user)
     ):
     
-    return crud.get_customer_by_id(db=db, id=id)
+    return crud_customer.get_customer_by_id(db=db, id=id)
