@@ -79,6 +79,7 @@ def create_customers(db):
     crud_customer.create(session, schema.CustomerBase(name='Bar'))
     crud_customer.create(session, schema.CustomerBase(name='Bar2'))
     crud_customer.create(session, schema.CustomerBase(name='Bar3'))
+    crud_customer.create(session, schema.CustomerBase(name='Bar4'))
     result = crud_customer.create(
         session,
         schema.CustomerBase(name='FooBar3')

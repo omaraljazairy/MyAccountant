@@ -25,3 +25,18 @@ def create(db: Session, customer: schema.Customer):
     db.commit()
     db.refresh(db_customer)
     return db_customer
+
+
+def update(db: Session, customer: schema.Customer):
+    db_customer = db.query(models.Customer).get(customer.id)
+    db_customer.name = customer.name
+    db.add(db_customer)
+    db.commit()
+    db.refresh(db_customer)
+    return db_customer
+
+
+def delete(db: Session, customer_id: int ) -> None:
+    db_customer = db.query(models.Customer).get(customer_id)
+    db.delete(db_customer)
+    db.commit()

@@ -46,3 +46,30 @@ async def get_all_customers(
     ):
     
     return crud_customer.get_customer_by_id(db=db, id=id)
+
+
+# update customer
+@router.put("/", response_model=Customer)
+async def update_customer(customer: Customer, db: Session = Depends(get_db)):
+    # check if customer exists first, else, return an http error NOT FOUND
+    existing_customer = db.query(models.Customer).get(customer.id)
+    logger.info(f"customer: {customer} is {existing_customer}")
+    if not existing_customer:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Customer with id {customer.id} does not exist"
+        )
+    return crud_customer.update(db=db, customer=customer)
+
+
+@router.delete("/id/{id:int}/", status_code=204)
+async def delete_customer(id: int, db: Session = Depends(get_db)):
+    # check if customer exists first, else, return an http error NOT FOUND
+    existing_customer = db.query(models.Customer).get(id)
+    logger.info(f"customer with id: {id} is {existing_customer}")
+    if not existing_customer:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Customer with id {id} does not exist"
+        )
+    crud_customer.delete(db=db, customer_id=id)
