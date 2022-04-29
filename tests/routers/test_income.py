@@ -100,6 +100,28 @@ def test_income_post_day_rate(auth_user, client):
     assert data == expected_data
 
 
+def test_income_post_invalid_date_format_error(auth_user, client):
+    """post a new income with the wrong invoice date.
+    Expect an error.
+    """
+
+    token = auth_user
+    headers = {"Authorization": f"Bearer {token}"}
+    input_data = {
+        "total": 3,
+        "contract_id": 3,
+        "invoice_date": "3-1-2001",
+    }
+
+    response = client.post('/income/', json=input_data, headers=headers)
+    data = response.json()
+
+    logger.debug(f"response income: {response}")
+    logger.debug(f"income data: {data}")
+
+    assert response.status_code == 422
+
+
 def test_get_income_by_start_date_end_date(auth_user, client):
     """make a get request with a start_date only. with the start_date
     2010-02-01 and a future end date that has no invoice after
@@ -147,6 +169,26 @@ def test_get_income_by_start_date_end_date(auth_user, client):
     assert data[0] == expected_data[0]
 
     assert data[1] == expected_data[1]
+
+
+def test_get_income_by_invalid_start_date(auth_user, client):
+    """make a get request with an invalid start_date format.
+    Expect error 422.
+    """
+
+    token = auth_user
+    headers = {"Authorization": f"Bearer {token}"}
+
+    response = client.get(
+        '/income/by_date/10-03-01/2022-04-01/',
+        headers=headers
+        )
+    data = response.json()
+
+    logger.debug(f"response income: {response}")
+    logger.debug(f"income data: {data}")
+
+    assert response.status_code == 422
 
 
 def test_get_income_by_start_end_date_1_record(auth_user, client):

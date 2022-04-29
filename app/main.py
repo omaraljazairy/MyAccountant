@@ -2,7 +2,6 @@ import logging
 from fastapi import FastAPI, Depends, HTTPException
 from app.config import get_settings, Settings
 from services.database import engine
-from datamodels.schema import Login
 from datamodels import models
 from routers import auth, contract, user, income, customer
 import logging.config

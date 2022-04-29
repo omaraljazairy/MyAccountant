@@ -1,12 +1,13 @@
 from sqlalchemy.orm import Session
-from datamodels import models, schema
+from datamodels import models
+from datamodels.schemas import schema_income
 from datetime import date
 import logging
 
 logger = logging.getLogger('crud')
 
 
-def create(db: Session, income: schema.Income):
+def create(db: Session, income: schema_income.Income):
     db_income = models.Income(
         **income.dict()
     )

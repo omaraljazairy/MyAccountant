@@ -20,7 +20,7 @@ def test_fixture_contract(create_contract, db):
     contract = db.query(models.Contract).all()
     logger.debug(f'contract : {contract} - {len(contract)}')
 
-    assert len(contract) == 3
+    assert len(contract) == 4
 
 
 def test_fixture_income(db, create_income):

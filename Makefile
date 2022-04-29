@@ -10,3 +10,5 @@ stop:	## stop the docker containers
 	@docker-compose down
 test:	## unittest the application using pytest
 	@python -m pytest --cov=. tests/ --cov-report term --flake8 --isort
+test-html:	## unittest the application using pytest and generate html report
+	@python -m pytest --cov=. tests/ --cov-report html --flake8 --isort

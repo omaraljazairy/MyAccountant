@@ -33,13 +33,20 @@ class Contract(Base):
     __tablename__ = "Contract"
 
     id = Column(Integer, primary_key=True)
-    customer_id = Column(Integer, ForeignKey("Customer.id"))
+    customer_id = Column(Integer, ForeignKey(
+        "Customer.id",
+        ondelete='RESTRICT',
+        onupdate='CASCADE'))
     unit = Column(String)
     rate = Column(Float)
     start_date = Column(Date)
     created = Column(DateTime, default=datetime.now())
 
-    customer = relationship("Customer", back_populates="contract")
+    customer = relationship(
+        "Customer",
+        back_populates="contract",
+        passive_deletes=True
+        )
     income = relationship("Income", back_populates="contract")
 
 
@@ -49,7 +56,10 @@ class Income(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     total = Column(Float)
-    contract_id = Column(Integer, ForeignKey('Contract.id'))
+    contract_id = Column(Integer, ForeignKey(
+        'Contract.id',
+        ondelete='RESTRICT',
+        onupdate='CASCADE'))
     invoice_date = Column(Date)
     created = Column(DateTime, default=datetime.now())
 

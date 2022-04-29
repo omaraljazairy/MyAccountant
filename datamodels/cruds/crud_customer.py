@@ -1,5 +1,6 @@
 from sqlalchemy.orm import Session
-from datamodels import models, schema
+from datamodels import models
+from datamodels.schemas import schema_customer
 import logging
 
 logger = logging.getLogger('crud')
@@ -17,7 +18,7 @@ def get_customer_by_id(db: Session, id: int):
     return db.query(models.Customer).get(id)
 
 
-def create(db: Session, customer: schema.Customer):
+def create(db: Session, customer: schema_customer.Customer):
     db_customer = models.Customer(
         **customer.dict()
     )
@@ -27,7 +28,7 @@ def create(db: Session, customer: schema.Customer):
     return db_customer
 
 
-def update(db: Session, customer: schema.Customer):
+def update(db: Session, customer: schema_customer.Customer):
     db_customer = db.query(models.Customer).get(customer.id)
     db_customer.name = customer.name
     db.add(db_customer)
