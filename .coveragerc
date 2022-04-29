@@ -9,6 +9,9 @@ omit =
     app/config.py
     app/log.py
 
+    # omit dbcon service file
+    services/database.py
+
     # omit everything in /tests    
     tests/**
 

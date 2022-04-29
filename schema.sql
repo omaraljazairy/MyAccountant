@@ -1,4 +1,4 @@
-CREATE TABLE "User" (
+CREATE TABLE IF NOT EXISTS "User" (
 	id INTEGER NOT NULL, 
 	username VARCHAR NOT NULL, 
 	password VARCHAR NOT NULL, 
@@ -8,31 +8,28 @@ CREATE TABLE "User" (
 	UNIQUE (email)
 );
 CREATE INDEX "ix_User_id" ON "User" (id);
-CREATE TABLE "Customer" (
+CREATE TABLE IF NOT EXISTS "Customer" (
 	id INTEGER NOT NULL, 
 	name VARCHAR, 
 	created DATETIME, 
 	PRIMARY KEY (id), 
 	UNIQUE (name)
 );
-CREATE TABLE "Contract" (
+CREATE TABLE IF NOT EXISTS "Contract" (
 	id INTEGER NOT NULL, 
 	customer_id INTEGER, 
-	hourly_rate FLOAT, 
+	unit VARCHAR, 
+	rate FLOAT, 
 	start_date DATE, 
 	created DATETIME, 
 	PRIMARY KEY (id), 
 	FOREIGN KEY(customer_id) REFERENCES "Customer" (id)
 );
-CREATE TABLE "Income" (
+CREATE TABLE IF NOT EXISTS "Income" (
 	id INTEGER NOT NULL, 
 	total FLOAT, 
 	contract_id INTEGER, 
-	invoice_date VARCHAR, 
-	excl FLOAT, 
-	incl FLOAT, 
-	netto FLOAT, 
-	yearl_vat FLOAT, 
+	invoice_date DATE, 
 	created DATETIME, 
 	PRIMARY KEY (id), 
 	FOREIGN KEY(contract_id) REFERENCES "Contract" (id)

@@ -9,13 +9,23 @@ def test_post_customer(client):
     logger.debug(f"response: {response}")
     logger.debug(f"response headers: {response.content}")
 
-    assert response.status_code == 200
+    assert response.status_code == 201
+
+
+def test_post_customer_exists_409(client):
+    """post an existing customer, should get back 409 error"""
+
+    response = client.post("/customer/", json={"name": "Bar"})
+    logger.debug(f"response: {response}")
+    logger.debug(f"response headers: {response.content}")
+
+    assert response.status_code == 409
 
 
 def test_put_customer_found(client):
     """update customer with id 2 Bar to BOA."""
 
-    response = client.put("/customer/", json={"id": 2, "name": "BOA"})
+    response = client.put("/customer/update/", json={"id": 2, "name": "BOA"})
     logger.debug(f"response from update: {response}")
     logger.debug(f"response headers: {response.content}")
 
@@ -26,7 +36,10 @@ def test_put_customer_not_found_404(client):
     """update customer with id 1000 that doesn't exist. expect statuscode 404
     not found."""
 
-    response = client.put("/customer/", json={"id": 1000, "name": "BBB"})
+    response = client.put("/customer/update/", json={
+        "id": 1000,
+        "name": "BBB"
+        })
     logger.debug(f"response from update: {response}")
     logger.debug(f"response headers: {response.content}")
 
@@ -34,9 +47,9 @@ def test_put_customer_not_found_404(client):
 
 
 def test_delete_customer_success(client):
-    """delete customer with id 4 and expect statuscode 200."""
+    """delete customer with id 5 and expect statuscode 200."""
 
-    response = client.delete("/customer/id/5/")
+    response = client.delete("/customer/delete/customer_id/5/")
     logger.debug(f"response from delete: {response}")
     logger.debug(f"response headers: {response.content}")
 
@@ -46,11 +59,22 @@ def test_delete_customer_success(client):
 def test_delete_customer_not_found(client):
     """delete customer with unknown id 6666 and expect statuscode 404."""
 
-    response = client.delete("/customer/id/6666/")
+    response = client.delete("/customer/delete/customer_id/6666/")
     logger.debug(f"response from delete: {response}")
     logger.debug(f"response headers: {response.content}")
 
     assert response.status_code == 404
+
+
+# def test_delete_customer_exist_in_contract_error(client):
+#     """delete a customer that is a foreign key, should return an error."""
+
+#     response = client.delete("/customer/delete/customer_id/1/")
+#     logger.debug(f"response from delete: {response}")
+#     logger.debug(f"response content: {response.json()}")
+#     logger.debug(f"response headers: {response.content}")
+
+#     assert response.status_code == 500
 
 
 def test_get_all_customers(client, auth_user):
@@ -71,7 +95,7 @@ def test_get_all_customers(client, auth_user):
     assert len(content) > 2
 
 
-def test_get_1_customer_with_hist_contract(client, auth_user):
+def test_get_1_customer_with_his_contract(client, auth_user):
     """call the api customer/1/ to get customer with related contracts.
     """
 

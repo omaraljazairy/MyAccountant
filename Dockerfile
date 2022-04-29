@@ -1,3 +1,4 @@
+# create a venv first before running this docker: python3.6 -m venv venv
 # pull official base image
 FROM python:3.6
 

@@ -132,4 +132,5 @@ dmypy.json
 logs/
 
 # sqlitedb
-sql_app.db
+*.db
+sql_test_app.db
